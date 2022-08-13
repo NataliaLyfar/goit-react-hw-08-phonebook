@@ -26,17 +26,16 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const imageListRef = ref(storage, `${token}/images/`);
 
-  useEffect(() => {    
+  useEffect(() => {   
+    const imageListRef = ref(storage, `${token}/images/`); 
     listAll(imageListRef).then((response) => {
       response.items.forEach(item => {getDownloadURL(item).then(url => {
         setImageList(prev => [url, ...prev]);
         });
       });
     });
-    uploadImage(imageUpload);
-  },[imageUpload]);
+  },[token]);
 
   useEffect(() => {
     if (backLocation === null) {
@@ -48,7 +47,7 @@ const ProfilePage = () => {
     navigate(backLocation);
 };
 
-function uploadImage (){
+useEffect(()=> {
   if(!imageUpload) return;
   const imageRef = ref(storage, `${token}/images/${imageUpload.name + nanoid()}`);
   uploadBytes(imageRef, imageUpload).then((snapshot) => {
@@ -57,7 +56,7 @@ function uploadImage (){
       setImageList(prev => [url, ...prev])
     })
   });
-};
+}, [token, imageUpload]);
 
   return (
     <ProfileWrapper>
