@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <GlobalStyle />
     <ThemeProvider theme={theme}>
     <ToastContainer autoClose={3000} />
-    <BrowserRouter basename="/goit-react-hw-08-1-phonebook/">
+    <BrowserRouter basename="/goit-react-hw-08-phonebook/">
     <PersistGate loading={null} persistor={persistor}>
       <Provider store={store}>
         <App />
