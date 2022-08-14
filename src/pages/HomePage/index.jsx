@@ -59,7 +59,7 @@ const NotifyBox = styled.div`
   };
 `;
 const Notify = styled.p`
-  padding: ${p => p.theme.space[0]}px 0;
+  margin: ${p => p.theme.space[0]}px 0;
   color: ${p => p.theme.colors.black};
   font-size: ${p => p.theme.fontSizes.s};
   font-weight: ${p => p.theme.fontWeights.semibold};
@@ -71,7 +71,7 @@ const Notify = styled.p`
   };
 `;
 const NotifyAuth = styled(Notify)`
-  padding-top: ${p => p.theme.space[2]}px;
+  margin-top: ${p => p.theme.space[1]}px;
   font-weight: ${p => p.theme.fontWeights.normal};
 `;
 const StyledLink = styled(NavLink)`

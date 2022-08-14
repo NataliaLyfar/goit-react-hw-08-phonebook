@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 const StyledSection = styled.section`
-padding-top: ${p => p.theme.space[3]}px;
+padding-top: ${p => p.theme.space[2]}px;
 `;
 
 export const Section = ({ children }) => {

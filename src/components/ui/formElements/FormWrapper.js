@@ -5,7 +5,7 @@ import BackPic from 'assets/formBack.jpg'
 export const FormWrapper = styled.div`
 position: relative;
 margin: ${p => p.theme.space[3]}px auto;
-padding: ${p => p.theme.space[3]}px 0 ${p => p.theme.space[8]}px;
+padding: ${p => p.theme.space[3]}px 0 ${p => p.theme.space[7]}px;
 border-radius: ${p => p.theme.radii.normal};
 background-color: ${p => p.theme.colors.secondary};
 display: flex;

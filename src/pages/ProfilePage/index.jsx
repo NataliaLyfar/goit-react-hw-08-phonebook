@@ -152,7 +152,6 @@ display: flex;
 flex-direction: column;
 `;
 const Label = styled.span`
-margin-bottom: ${p => p.theme.space[0]}px;
 padding-left: ${p => p.theme.space[2]}px;
 font-size: ${p => p.theme.fontSizes.s};
 font-weight: ${p => p.theme.fontWeights.semibold};

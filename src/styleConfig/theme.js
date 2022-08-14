@@ -12,7 +12,7 @@ export const theme = {
       shadow: '#ececec',
       shade: 'rgba(255,255,255,0.2)',
     },
-    space: [5, 10, 15, 20, 25, 30, 35, 50, 75, 85, 250],
+    space: [5, 10, 15, 20, 25, 30, 35, 55, 75, 85, 250],
     fonts: {
       body: 'Roboto Slab, serif',
     },
@@ -21,7 +21,7 @@ export const theme = {
       s: '14px',
       m: '16px',
       l: '18px',
-      xl: '22px',
+      xl: '20px',
       xxl: '40px'
     },
     fontWeights: {

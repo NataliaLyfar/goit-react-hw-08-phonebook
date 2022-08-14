@@ -5,6 +5,7 @@ import { yupPasswordValidation } from 'schema';
 import { useDispatch } from 'react-redux';
 import authOperations  from 'redux/auth/authOperations';
 import { FaUserPlus, FaRegEye } from "react-icons/fa";
+import { MdAttachEmail } from "react-icons/md";
 import { Label, 
          PrimaryButton, 
          ShowPasswordButton, 
@@ -49,7 +50,7 @@ export const SignUpForm = () => {
             <Label htmlFor='name'><FaUserPlus/>Name</Label>
             <FormInput type='name' name='name'/>
             <FormError name="name"/>
-            <Label htmlFor='email'><FaUserPlus/>Email</Label>
+            <Label htmlFor='email'><MdAttachEmail/>Email</Label>
             <FormInput type='email' name='email'/>
             <FormError name="email"/>
             <Label htmlFor='password'>Password</Label>

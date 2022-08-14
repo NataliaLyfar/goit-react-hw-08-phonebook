@@ -13,7 +13,7 @@ export const MainContainer = styled.div`
   };
   @media (${breakpoints.tablet}) {
     min-width: 768px;
-    height: calc(100vh - 133px);
+    height: calc(100vh - 130px);
   };
   @media (${breakpoints.laptop}) {
     max-width: 1200px;

@@ -4,7 +4,8 @@ import * as yup from 'yup';
 import { yupLoginPasswordValidation } from 'schema';
 import { useDispatch } from 'react-redux';
 import  authOperations from 'redux/auth/authOperations';
-import { FaUserPlus, FaRegEye } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
+import { MdAttachEmail } from "react-icons/md"
 import { Label, 
          PrimaryButton,
          ShowPasswordButton,
@@ -44,7 +45,7 @@ export const LogInForm = () => {
       validationSchema={schema}
       onSubmit={handleSubmit}>  
         <FormContact>
-            <Label htmlFor='email'><FaUserPlus/>Email</Label>
+            <Label htmlFor='email'><MdAttachEmail/>Email</Label>
             <FormInput type='email' name='email'/>
             <FormError name="email"/>
             <Label htmlFor='password'>Password</Label>
