@@ -1,8 +1,22 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 
+let progressInterval = null;
 export const ProgressBar = (props) => {
-    const {  completed } = props;
+    const [completed, setCompleted] = useState(0);
+    useEffect(() => {
+      progressInterval = setInterval(() => {
+        setCompleted(prev => prev + 10)}, 10);
+    }, []);
+  
+    useEffect(() => {
+      if(completed >= 100){
+        clearInterval(progressInterval);
+        };  
+    }, [completed]);
+
+
     return (
         <ContainerStyles>
             <LabelStyles
@@ -11,6 +25,7 @@ export const ProgressBar = (props) => {
                 aria-valuemin="0"
                 aria-valuemax="100"
                 style={{width: completed}}
+                max={100}
             ></LabelStyles>
         </ContainerStyles>
     );

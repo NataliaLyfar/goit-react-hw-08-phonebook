@@ -6,20 +6,19 @@ import { FaUserPlus, FaPhoneAlt } from "react-icons/fa";
 import { Label,
          TertiaryButton, 
          FormError, 
-         FormContact, 
+         StyledForm, 
          FormInput } from "components/ui";
 import { 
-  useCreateContactsMutation,
+  useCreateContactMutation,
   useGetContactsQuery,
- } from "redux/contacts/contactsApi";
+ } from "redux/phonebookApiQuery";
 import { PhoneInputField } from './PhoneInputField';
 
 
-
 export const ContactForm = () => {
-  const [createContact, { isLoading }] = useCreateContactsMutation();
-  const { data } = useGetContactsQuery();
-
+  const [createContact] = useCreateContactMutation();
+  const { data: contacts } = useGetContactsQuery();
+ 
   const initialValues = {
     name: '',
     number: ''
@@ -31,7 +30,7 @@ export const ContactForm = () => {
   });
 
   const handleSubmit = (values, {resetForm}) => {
-    const isContactExist = data.find(({name}) => name.toLowerCase() === values.name.toLowerCase());
+    const isContactExist = contacts?.find(({name}) => name.toLowerCase() === values.name.toLowerCase());
     if(isContactExist){
       return toast.info(`${values.name} is already in contacts`);
     };
@@ -44,7 +43,7 @@ export const ContactForm = () => {
       initialValues={initialValues}
       validationSchema={schema}
       onSubmit={handleSubmit}>
-        <FormContact>
+        <StyledForm>
             <Label htmlFor='name'><FaUserPlus/>Name</Label>
             <FormInput type='text' name='name'/>
             <FormError name="name"/>
@@ -54,10 +53,10 @@ export const ContactForm = () => {
             component={PhoneInputField}
             />
             <FormError name="number"/>
-            <TertiaryButton type='submit' disabled={isLoading}>
+            <TertiaryButton type='submit'>
               Add contact
             </TertiaryButton>
-        </FormContact>
+        </StyledForm>
     </Formik>
   );
 };

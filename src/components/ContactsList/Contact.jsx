@@ -1,11 +1,10 @@
 import {Link, useLocation} from "react-router-dom";
 import PropTypes from 'prop-types';
 import styled from "styled-components";
-import { useDeleteContactMutation } from "redux/contacts/contactsApi";
+import { useDeleteContactMutation } from "redux/phonebookApiQuery";
 import { IconButton } from 'components/ui';
 import {FaUserMinus} from "react-icons/fa";
 import {GrDocumentUpdate} from "react-icons/gr";
-
 
 
 export const Contact = ({ id, name, number }) => {
@@ -50,6 +49,7 @@ align-items: center;
 justify-content: space-between;
 margin-bottom: ${p => p.theme.space[1]}px;
 box-shadow: 0px 5px 5px -5px ${p => p.theme.colors.tertiary};
+background-color: ${p => p.theme.colors.white};
 `;
 const Initials = styled.span`
 display: flex;

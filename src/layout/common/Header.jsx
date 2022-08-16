@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
-import { authSelectors } from "redux/auth";
+import  authSelectors  from "redux/auth/authSelectors";
 import styled from "styled-components";
 import { Container } from "components/ui";
-import { Navigation, AuthNav, UserMenu  } from "components/Navigation";
-
+import { Navigation, AuthNav, UserMenu  } from "./Navigation";
 
 
 export const Header = () => {

@@ -1,42 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { yupPasswordValidation } from 'schema';
-import { useDispatch } from 'react-redux';
-import authOperations  from 'redux/auth/authOperations';
+import { yupEmailValidation, yupPasswordValidation } from 'schema';
+import { toast } from "react-toastify";
 import { FaUserPlus, FaRegEye } from "react-icons/fa";
 import { MdAttachEmail } from "react-icons/md";
 import { Label, 
          PrimaryButton, 
          ShowPasswordButton, 
          FormError, 
-         FormContact, 
+         StyledForm, 
          FormInput, 
          InputWrapper} from "components/ui";
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
-
-export const SignUpForm = () => {
+export const AuthForm = ({onSubmit, type, error, register = false}) => {
   const [passwordShown, setPasswordShown] = useState(false);
-  const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (error?.status === 400) {
+      if(error?.data?.name === "MongoError") toast.error(`User already exists! Try again!`);
+      if(error?.data?.message) toast.error(`${error?.data?.message}`);
+      if(!register)toast.error(`Incorrect email or password. Try again!`);
+    };
+    if (error?.status === 404) toast.error(`Сonnection error 404! Try later!`);
+    if (error?.status === 500) toast.error(`Server error! Try again!`);
+  }, [error, register]);
+  
   const initialValues = {
     name: '',
     email: '',
     password: '',
   };
       
-  const schema = yup.object({
+  const schema = register ? 
+  yup.object({
     ...yupPasswordValidation,
+    ...yupEmailValidation,
     name: yup.string().required('Please, enter your name'),
-    email: yup.string().email().required('Please, enter your email'),
+  }) : 
+  yup.object({
+    ...yupPasswordValidation,
+    ...yupEmailValidation,
   });
     
-  const handleSubmit = (values, {resetForm}) => {
-    dispatch(authOperations.register(values));
-    resetForm();
-  };
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
@@ -45,11 +53,15 @@ export const SignUpForm = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={handleSubmit}>  
-        <FormContact>
-            <Label htmlFor='name'><FaUserPlus/>Name</Label>
-            <FormInput type='name' name='name'/>
-            <FormError name="name"/>
+      onSubmit={onSubmit}>
+        <StyledForm noValidate>
+          {register && (
+            <>
+              <Label htmlFor='name'><FaUserPlus/>Name</Label>
+              <FormInput type='name' name='name'/>
+              <FormError name="name"/>
+            </>
+          )}
             <Label htmlFor='email'><MdAttachEmail/>Email</Label>
             <FormInput type='email' name='email'/>
             <FormError name="email"/>
@@ -68,9 +80,9 @@ export const SignUpForm = () => {
             </InputWrapper>
             <FormError name="password"/>
             <PrimaryButton type='submit'>
-              Sign Up
-            </PrimaryButton>
-        </FormContact>
+              {type}
+            </PrimaryButton>  
+        </StyledForm>
     </Formik>
   );
 };

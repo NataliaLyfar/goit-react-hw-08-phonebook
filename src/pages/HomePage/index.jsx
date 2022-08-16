@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import{ useSelector } from "react-redux";
-import{ authSelectors } from "redux/auth";
+import authSelectors  from "redux/auth/authSelectors";
 import { breakpoints } from "styleConfig/breakpoints";
 import { TbHandClick } from "react-icons/tb";
-import { Title } from "components/ui";
+import { Title, Button } from "components/ui";
 import BackPic from 'assets/background.jpg';
 
 
@@ -18,16 +18,22 @@ const HomePage = () => {
       <Title>Welcome to your Phonebook{userName}!</Title>
       {isLoggedIn ? (
         <>
-        <NotifyAuth>To add a new contact</NotifyAuth>
-        <StyledLink to="/contacts">Click here&nbsp;<TbHandClick/></StyledLink>
+          <NotifyAuth>To add a new contact</NotifyAuth>
+          <Button>
+            <StyledLink to="/contacts">Click here&nbsp;<TbHandClick/></StyledLink>
+          </Button>
         </>
         ) : (
         <NotifyBox>
-        <Notify>To keep your contacts private, log in to your account.</Notify>
-        <NotifyAuth>If you haven't registered yet</NotifyAuth>
-        <StyledLink to="/signup">Click here&nbsp;<TbHandClick/></StyledLink>
-        <NotifyAuth>If you already have an account</NotifyAuth>
-        <StyledLink to="/login">Click here&nbsp;<TbHandClick/></StyledLink>
+          <Notify>To keep your contacts private, log in to your account.</Notify>
+          <NotifyAuth>If you haven't registered yet</NotifyAuth>
+          <Button>
+            <StyledLink to="/signup">Click here&nbsp;<TbHandClick/></StyledLink>
+          </Button>        
+          <NotifyAuth>If you already have an account</NotifyAuth>
+          <Button>
+            <StyledLink to="/login">Click here&nbsp;<TbHandClick/></StyledLink>
+          </Button>
         </NotifyBox>
         )
       }

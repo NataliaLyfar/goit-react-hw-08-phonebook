@@ -12,14 +12,10 @@ const UpdatePage  = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (backLocation === null) {
-      setBackLocation(location?.state?.from ?? '/');
-    };
+    if (backLocation === null) setBackLocation(location?.state?.from ?? '/');
   }, [backLocation, location?.state?.from]);
     
-  const onGoBack = () => {
-    navigate(backLocation);
-  };
+  const onGoBack = () => navigate(backLocation);
 
   return (
     <FormPageContainer>

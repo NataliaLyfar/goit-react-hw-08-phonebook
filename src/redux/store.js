@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import {contactsApi, filterSlice} from'./contacts';
+import { contactsSlice } from'./contacts';
+import { phonebookApi } from './phonebookApiQuery';
 import { middleware } from './middleware';
-import { authReducer } from './auth';
+import authSlice from './auth/authSlice';
 
 
 const authPersistConfig = {
@@ -14,11 +15,11 @@ const authPersistConfig = {
 
 export const store = configureStore({
   reducer: {
-    auth: persistReducer(authPersistConfig, authReducer),
-    contacts: contactsApi.reducer,
-    filter: filterSlice.reducer,
+    auth: persistReducer(authPersistConfig, authSlice.reducer),
+    contact: contactsSlice.reducer,
+    [phonebookApi.reducerPath]: phonebookApi.reducer,
     },
-  middleware: middleware,
+  middleware,
 });
 
 export const persistor = persistStore(store);

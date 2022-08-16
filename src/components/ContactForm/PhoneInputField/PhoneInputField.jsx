@@ -4,32 +4,29 @@ import PropTypes from 'prop-types';
 
 
 export const PhoneInputField = (props) => {
-    const {
-      field: { name, value },
-      form: {
-        setFieldValue, 
-      },
-      country,
-      onChange,
-    } = props;
+  const {
+    field: { name, value },
+    form: { setFieldValue} ,
+    country,
+    onChange,
+  } = props;
   
-    const onValueChange = (phoneNumber) => {
-      setFieldValue(name, phoneNumber);
-  
-      if (onChange !== null) {
-        onChange(phoneNumber);
-      }
-    };
-  
-    return (
-        <PhoneInput
-          placeholder="Enter phone number"
-          name={name}
-          value={value}
-          onChange={onValueChange}
-          country={country}
-          id="phoneInput"
-        />
+  const onValueChange = (phoneNumber) => {
+    setFieldValue(name, phoneNumber);
+    if (onChange !== null) {
+      onChange(phoneNumber);
+    }
+  };
+
+  return (
+      <PhoneInput
+        placeholder="Enter phone number"
+        name={name}
+        value={value}
+        onChange={onValueChange}
+        country={country}
+        id="phoneInput"
+      />
     );
   };
   

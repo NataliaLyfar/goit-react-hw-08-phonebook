@@ -27,9 +27,18 @@ color: ${p => p.theme.colors.black};
 font-family:inherit;
 font-weight: ${p => p.theme.fontWeights.normal};
 font-size: ${p => p.theme.fontSizes.s};
-  &:hover, &:focus {
+  &:hover {
     outline: none;
     background-color: ${p => p.theme.colors.shade};
+    box-shadow: 
+  -10px -10px 15px rgba(255, 255, 255, 0.5),
+  10px 10px 15px rgba(70, 70, 70, 0.12),
+  inset -10px -10px 15px rgba(255, 255, 255, 0.5),
+  inset 10px 10px 15px rgba(70, 70, 70, 0.12);
+  };
+  &:focus {
+    outline: none;
+    background-color: ${p => p.theme.colors.shadow};
     box-shadow: 
   -10px -10px 15px rgba(255, 255, 255, 0.5),
   10px 10px 15px rgba(70, 70, 70, 0.12),

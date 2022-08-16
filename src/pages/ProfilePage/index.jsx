@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { authSelectors, authOperations } from "redux/auth";
+import  authSelectors  from "redux/auth/authSelectors";
 import { Title, List, Box, TertiaryButton, SecondaryButton } from "components/ui";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { storage } from "../../firebase/firebase";
@@ -13,50 +13,52 @@ import styled from "styled-components";
 import noAvatar from 'assets/noAvatar.jpg';
 import addPhoto from 'assets/addPhoto.jpg';
 import BackPic from 'assets/profileBack.jpg';
-
+import authSlice from "redux/auth/authSlice";
+import { useLogoutUserMutation } from "redux/phonebookApiQuery";
 
 
 const ProfilePage = () => {
+  const [logoutUser, {isSuccess: isLogoutSuccess}] = useLogoutUserMutation();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
   const userName = useSelector(authSelectors.getUserName);
   const userEmail = useSelector(authSelectors.getUserEmail);
-  const token = useSelector(authSelectors.getToken);
   const [backLocation, setBackLocation] = useState(null);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const onGoBack = () => navigate(backLocation);
 
-  useEffect(() => {   
-    const imageListRef = ref(storage, `${token}/images/`); 
+  useEffect(() => { 
+    if(!userEmail) return;  
+    const imageListRef = ref(storage, `${userEmail}/images/`); 
     listAll(imageListRef).then((response) => {
       response.items.forEach(item => {getDownloadURL(item).then(url => {
         setImageList(prev => [url, ...prev]);
         });
       });
     });
-  },[token]);
+  },[userEmail]);
+
+  useEffect(()=> {
+    if(!imageUpload) return;
+    const imageRef = ref(storage, `${userEmail}/images/${imageUpload.name + nanoid()}`);
+    uploadBytes(imageRef, imageUpload).then((snapshot) => {
+      toast.success('Image Uploaded');
+      getDownloadURL(snapshot.ref).then((url) => {
+        setImageList(prev => [url, ...prev]);
+      });
+    });
+  }, [userEmail, imageUpload]);
 
   useEffect(() => {
-    if (backLocation === null) {
-      setBackLocation(location?.state?.from ?? '/');
-    };
+    if(isLogoutSuccess) dispatch(authSlice.actions.signout());
+  },[dispatch, isLogoutSuccess]);
+
+  useEffect(() => {
+  if (backLocation === null) setBackLocation(location?.state?.from ?? '/');
   }, [backLocation, location?.state?.from]);
 
-  const onGoBack = () => {
-    navigate(backLocation);
-};
-
-useEffect(()=> {
-  if(!imageUpload) return;
-  const imageRef = ref(storage, `${token}/images/${imageUpload.name + nanoid()}`);
-  uploadBytes(imageRef, imageUpload).then((snapshot) => {
-    toast.info('Image Uploaded');
-    getDownloadURL(snapshot.ref).then((url) => {
-      setImageList(prev => [url, ...prev])
-    })
-  });
-}, [token, imageUpload]);
 
   return (
     <ProfileWrapper>
@@ -78,7 +80,7 @@ useEffect(()=> {
             <Item><Label>Name</Label><Value>{userName}</Value></Item>
             <Item><Label>Email</Label><Value>{userEmail}</Value></Item>
         </List>
-        <TertiaryButton type="button" onClick={() => dispatch(authOperations.logOut())}>
+        <TertiaryButton type="button" onClick={() => logoutUser()}>
           Log out
         </TertiaryButton>
       </Box>
@@ -99,19 +101,6 @@ background-position: center;
 background-repeat: no-repeat;
 background-size: contain;
 `;
-const AvatarInput = styled.input`
-position: absolute;
-top: 0;
-right: 0;
-display: block;
-width: 50px;
-height: 50px;
-opacity: 0;
-z-index: 2;
-  &:hover{
-    cursor: pointer;
-  };
-`;
 const Avatar = styled.img`
 display: flex;
 align-items: center;
@@ -123,6 +112,18 @@ background-color: transparent;
   @media (${breakpoints.tablet}) {
     width: 190px;
     height: 230px;
+  };
+`;
+const AvatarInput = styled.input`
+position: absolute;
+top: 0;
+right: 0;
+display: block;
+width: 50px;
+height: 50px;
+opacity: 0;
+  &:hover{
+    cursor: pointer;
   };
 `;
 const UpLoad = styled.div`
@@ -142,6 +143,9 @@ background-image: url(${addPhoto});
 background-position: center;
 background-repeat: no-repeat;
 background-size: contain;
+  &:hover ${AvatarInput}{
+    cursor: pointer;
+  };
 `;
 const AvatarWrapper = styled.div`
 position: relative;

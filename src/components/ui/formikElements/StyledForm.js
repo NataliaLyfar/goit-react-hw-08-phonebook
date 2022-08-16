@@ -3,7 +3,7 @@ import { Form } from 'formik';
 import { breakpoints } from "styleConfig/breakpoints";
 import 'react-phone-input-2/lib/style.css';
 
-export const FormContact = styled(Form)`
+export const StyledForm = styled(Form)`
 display: flex;
 flex-flow: column;
 justify-content: center;

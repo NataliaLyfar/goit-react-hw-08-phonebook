@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import { createSelector } from "@reduxjs/toolkit";
 import styled from "styled-components";
-import { useGetContactsQuery } from "redux/contacts/contactsApi";
+import { useGetContactsQuery } from "redux/phonebookApiQuery";
 import { getFilter } from "redux/contacts";
 import { SpinnerDotted } from 'spinners-react';
 import { Contact } from "./Contact";
@@ -10,14 +10,14 @@ import { List } from "components/ui";
 
 
 export const ContactsList = () => {
-  const filter = useSelector(getFilter);
+  const contact = useSelector(getFilter);
 
   const checkedContacts = useMemo(() => {
     return createSelector(
-      [res => res.data, (_, filter) => filter],
-      (contacts, filter) => 
+      [res => res.data, (_, contact) => contact],
+      (contacts, contact) => 
         contacts?.filter(({name}) => {
-          return name.toLowerCase().includes(filter.toLowerCase());
+          return name.toLowerCase().includes(contact.toLowerCase());
           }).sort((a, b) => a.name.localeCompare(b.name)) ?? [],
     );
   },[]);
@@ -26,7 +26,7 @@ export const ContactsList = () => {
     selectFromResult(result) {
       return {
         ...result,
-        filteredContacts: checkedContacts(result, filter)
+        filteredContacts: checkedContacts(result, contact)
       };
     },
   });

@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import { ScrollToTop } from "react-to-top";
 import { Header, Footer } from "./common";
 import { MainContainer } from "components/ui";
+import { Suspense } from "react";
+import { ProgressBar } from "components/ProgressBar";
 
 
 
@@ -11,7 +13,9 @@ export const MainLayout = () => {
       <Header />
         <main>
           <MainContainer>
+            <Suspense fallback={<ProgressBar />}>
               <Outlet />
+            </Suspense>
             <ScrollToTop
               style={{ bottom: '50px' }}
               bgColor="#3DA5AA"
