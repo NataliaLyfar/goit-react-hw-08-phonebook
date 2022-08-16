@@ -11,21 +11,18 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signin: (state, action) => {
+    setCredentials: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token
       state.isLoggedIn = true;
     },
-    signout: (state, _) => {
+    unsetCredentials: (state, _) => {
       state.user = { name: null, email: null };
       state.token = null;
       state.isLoggedIn = false;
     },
-    getCurrentUser: (state, action) => {
-      state.user = action.payload;
-      state.isLoggedIn = true;
-    },
   },
 });
 
+export const { setCredentials, unsetCredentials } = authSlice.actions;
 export default authSlice;

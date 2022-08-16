@@ -1,21 +1,23 @@
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import authSlice from "redux/auth/authSlice";
+import {setCredentials} from "redux/auth/authSlice";
 import { useLoginUserMutation } from "redux/phonebookApiQuery";
 import { AuthForm } from "components/AuthForm";
 import { FormPageContainer, FormWrapper, Title } from "components/ui";
+import { errorCatcher } from "helpers";
 
 
 const LoginPage = () => {
-  const [loginUser, { data: loginData, error }] = useLoginUserMutation();
+  const [loginUser] = useLoginUserMutation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (loginData?.user) dispatch(authSlice.actions.signin(loginData));
-  }, [loginData, dispatch]);
 
-  const handleSubmit = (values, { resetForm }) => {
-    loginUser(values);
+  const handleSubmit = async (values, { resetForm }) => {
+    try{
+      const response = await loginUser(values).unwrap();
+      dispatch(setCredentials(response));
+    } catch (error){
+      errorCatcher(false, error);
+    };
     resetForm();
   };
 
@@ -23,7 +25,7 @@ const LoginPage = () => {
     <FormPageContainer>
       <FormWrapper>
         <Title>Please login to your account</Title>
-        <AuthForm onSubmit={handleSubmit} error={error} type={"Log in"}/>
+        <AuthForm onSubmit={handleSubmit} type={"Log in"}/>
       </FormWrapper>
     </FormPageContainer>
   );

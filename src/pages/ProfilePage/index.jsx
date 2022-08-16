@@ -13,12 +13,12 @@ import styled from "styled-components";
 import noAvatar from 'assets/noAvatar.jpg';
 import addPhoto from 'assets/addPhoto.jpg';
 import BackPic from 'assets/profileBack.jpg';
-import authSlice from "redux/auth/authSlice";
-import { useLogoutUserMutation } from "redux/phonebookApiQuery";
+import {unsetCredentials} from "redux/auth/authSlice";
+import { phonebookApi, useLogoutUserMutation } from "redux/phonebookApiQuery";
 
 
 const ProfilePage = () => {
-  const [logoutUser, {isSuccess: isLogoutSuccess}] = useLogoutUserMutation();
+  const [logoutUser] = useLogoutUserMutation();
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
   const userName = useSelector(authSelectors.getUserName);
@@ -51,9 +51,11 @@ const ProfilePage = () => {
     });
   }, [userEmail, imageUpload]);
 
-  useEffect(() => {
-    if(isLogoutSuccess) dispatch(authSlice.actions.signout());
-  },[dispatch, isLogoutSuccess]);
+  const handleClick = async () => {
+    await logoutUser();
+    dispatch(unsetCredentials());
+    dispatch(phonebookApi.util.resetApiState());
+  };
 
   useEffect(() => {
   if (backLocation === null) setBackLocation(location?.state?.from ?? '/');
@@ -80,7 +82,7 @@ const ProfilePage = () => {
             <Item><Label>Name</Label><Value>{userName}</Value></Item>
             <Item><Label>Email</Label><Value>{userEmail}</Value></Item>
         </List>
-        <TertiaryButton type="button" onClick={() => logoutUser()}>
+        <TertiaryButton type="button" onClick={handleClick}>
           Log out
         </TertiaryButton>
       </Box>

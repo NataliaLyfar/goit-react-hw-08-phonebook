@@ -31,11 +31,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           draggable
           pauseOnHover />
     <BrowserRouter basename="/goit-react-hw-08-phonebook/">
-    <PersistGate loading={null} persistor={persistor}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
         <App />
-      </Provider>
       </PersistGate>
+    </Provider>
   </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>

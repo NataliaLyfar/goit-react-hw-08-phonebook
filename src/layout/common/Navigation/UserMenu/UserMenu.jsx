@@ -1,21 +1,11 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { BsPerson } from 'react-icons/bs';
-import { authSelectors } from 'redux/auth';
-import { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import authSlice from 'redux/auth/authSlice';
-import { useGetCurrentUserQuery } from 'redux/phonebookApiQuery';
+
 
 
 export const UserMenu = ({ location }) => {
-const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
-const {data: currentUserData} = useGetCurrentUserQuery(null, {skip: !isLoggedIn,});
-const dispatch = useDispatch();
 
-  useEffect(() => {
-   if(currentUserData) dispatch(authSlice.actions.getCurrentUser(currentUserData));
-  }, [currentUserData, dispatch]);
   
   return(
     <UserBox>

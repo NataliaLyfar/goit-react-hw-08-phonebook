@@ -14,15 +14,14 @@ export const phonebookApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['user', 'contacts'],
+  tagTypes: ['contacts'],
   endpoints: builder => ({
     registerUser: builder.mutation({
-      query: data => ({
+      query: body => ({
         url: '/users/signup',
         method: 'POST',
-        body: data,
+        body,
       }),
-      invalidatesTags: ['user'],
     }),
     loginUser: builder.mutation({
       query: data => ({
@@ -30,21 +29,12 @@ export const phonebookApi = createApi({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['user'],
     }),
     logoutUser: builder.mutation({
       query: () => ({
         url: '/users/logout',
         method: 'POST',
       }),
-      invalidatesTags: ['user'],
-    }),
-    getCurrentUser: builder.query({
-      query: () => ({
-        url: '/users/current',
-        method: 'GET',
-      }),
-      providesTags: ['user'],
     }),
     getContacts: builder.query({
       query: () => ({
@@ -83,7 +73,6 @@ export const {
     useRegisterUserMutation,
     useLoginUserMutation,
     useLogoutUserMutation,
-    useGetCurrentUserQuery, 
     useGetContactsQuery,
     useCreateContactMutation,
     useDeleteContactMutation,

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { yupEmailValidation, yupPasswordValidation } from 'schema';
-import { toast } from "react-toastify";
 import { FaUserPlus, FaRegEye } from "react-icons/fa";
 import { MdAttachEmail } from "react-icons/md";
 import { Label, 
@@ -15,18 +14,8 @@ import { Label,
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
-export const AuthForm = ({onSubmit, type, error, register = false}) => {
+export const AuthForm = ({onSubmit, type, register = false}) => {
   const [passwordShown, setPasswordShown] = useState(false);
-
-  useEffect(() => {
-    if (error?.status === 400) {
-      if(error?.data?.name === "MongoError") toast.error(`User already exists! Try again!`);
-      if(error?.data?.message) toast.error(`${error?.data?.message}`);
-      if(!register)toast.error(`Incorrect email or password. Try again!`);
-    };
-    if (error?.status === 404) toast.error(`Сonnection error 404! Try later!`);
-    if (error?.status === 500) toast.error(`Server error! Try again!`);
-  }, [error, register]);
   
   const initialValues = {
     name: '',
