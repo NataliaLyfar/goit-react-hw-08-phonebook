@@ -11,7 +11,7 @@ export const PhoneInputField = (props) => {
     onChange,
   } = props;
   
-  const onValueChange = (phoneNumber) => {
+  const onValueChange = (phoneNumber, country, e) => {
     setFieldValue(name, phoneNumber);
     if (onChange !== null) {
       onChange(phoneNumber);
@@ -23,7 +23,7 @@ export const PhoneInputField = (props) => {
         placeholder="Enter phone number"
         name={name}
         value={value}
-        onChange={onValueChange}
+        onChange={(e)=>onValueChange(e)}
         country={country}
         id="phoneInput"
       />

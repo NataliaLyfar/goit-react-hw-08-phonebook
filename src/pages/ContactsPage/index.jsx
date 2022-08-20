@@ -1,17 +1,43 @@
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 import { Section } from 'components/ui';
 import { ContactForm } from 'components/ContactForm';
 import { ContactsList } from 'components/ContactsList';
 import { Filter } from 'components/Filter';
 import { breakpoints } from "styleConfig/breakpoints";
+import { 
+  useCreateContactMutation,
+  useGetContactsQuery,
+ } from "redux/phonebookApiQuery";
 import BackPic from 'assets/contactBack.jpg'
 
 
 const ContactsPage  = () => {
+  const [createContact, { isLoading }] = useCreateContactMutation();
+  const { data: contacts } = useGetContactsQuery();
+ 
+  const initialValues = {
+    name: '',
+    number: ''
+  };
+  
+  const handleSubmit = (values, {resetForm}) => {
+    const isContactExist = contacts?.find(({name}) => name.toLowerCase() === values.name.toLowerCase());
+    if(isContactExist){
+      return toast.info(`${values.name} is already in contacts`);
+    };
+    createContact(values);
+    resetForm();
+  };
+  
   return (
     <ContactsWrapper>
       <Section>
-        <ContactForm />
+        <ContactForm 
+          handleSubmit={handleSubmit}
+          initialValues={initialValues}
+          isLoading={isLoading}
+        />
       </Section>
       <Section>
         <Filter />

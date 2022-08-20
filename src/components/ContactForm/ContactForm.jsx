@@ -1,62 +1,61 @@
-import { Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as yup from 'yup';
 import { yupPhoneValidation } from 'schema';
-import { toast } from 'react-toastify';
 import { FaUserPlus, FaPhoneAlt } from "react-icons/fa";
 import { Label,
-         TertiaryButton, 
+         TertiaryButton,
+         PrimaryButton, 
          FormError, 
          StyledForm, 
          FormInput } from "components/ui";
-import { 
-  useCreateContactMutation,
-  useGetContactsQuery,
- } from "redux/phonebookApiQuery";
-import { PhoneInputField } from './PhoneInputField';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 
-export const ContactForm = () => {
-  const [createContact] = useCreateContactMutation();
-  const { data: contacts } = useGetContactsQuery();
- 
-  const initialValues = {
-    name: '',
-    number: ''
-  };
-  
+export const ContactForm = ({handleSubmit, initialValues, isLoading, update=false}) => {
   const schema = yup.object({
     ...yupPhoneValidation,
     name: yup.string().required(),
   });
-
-  const handleSubmit = (values, {resetForm}) => {
-    const isContactExist = contacts?.find(({name}) => name.toLowerCase() === values.name.toLowerCase());
-    if(isContactExist){
-      return toast.info(`${values.name} is already in contacts`);
-    };
-    createContact(values);
-    resetForm();
-  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
       onSubmit={handleSubmit}>
+        {({values, handleChange, handleBlur}) => (
         <StyledForm>
             <Label htmlFor='name'><FaUserPlus/>Name</Label>
             <FormInput type='text' name='name'/>
             <FormError name="name"/>
             <Label htmlFor='number'><FaPhoneAlt/>Number</Label>
-            <Field
-            type="tel" name="number" country={'ua'} regions={'europe'}
-            component={PhoneInputField}
-            />
+            <PhoneInput
+                  inputProps={{
+                    name: 'number',
+                  }}
+                  country={'ua'}
+                  placeholder=''
+                  onChange={(phoneNumber, country, e) => {
+                    handleChange(e);
+                  }}
+                  onBlur={handleBlur}
+                  value={values.number}
+                />
             <FormError name="number"/>
-            <TertiaryButton type='submit'>
-              Add contact
-            </TertiaryButton>
+            {update ? (
+              <PrimaryButton type='submit'
+                disabled={isLoading}
+                aria-label="update contact button">
+                Update contact
+              </PrimaryButton>
+            ) : (
+              <TertiaryButton disabled={isLoading} type='submit'>
+                Add contact
+              </TertiaryButton>
+            )
+          }
         </StyledForm>
+        )}
     </Formik>
   );
 };

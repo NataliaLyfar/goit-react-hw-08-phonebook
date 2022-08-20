@@ -8,6 +8,7 @@ import { Title, Button } from "components/ui";
 import BackPic from 'assets/background.jpg';
 
 
+
 const HomePage = () => {
   const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
   const user = useSelector(authSelectors.getUserName);
